@@ -4,20 +4,34 @@ import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("请输入沪市(0)深市(1)后回车");
-        String area = input();
-        System.out.println("请输入股票代码，回车");
-        String code = input();
-        System.out.println("请输入开始日期，格式:YYYYMMDD");
-        String date_s = input();
-        System.out.println("请输入结尾日期，格式:YYYYMMDD");
-        String date_e = input();
+        //设定股票代码为沪市茅台
+        String area ="0";
+        String code ="600519";
+        //获取日期，基于系统时间
+        Date date = new Date();
+        SimpleDateFormat formatterY = new SimpleDateFormat("yyyyMMdd");
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        calendar.add(calendar.DATE,-1);
+
+        System.out.println(formatterY.format(calendar.getTime()));
+        System.out.println(formatterY.format(date));
+
+        //处理日期参数
+
+        String date_s = formatterY.format(calendar.getTime());
+        String date_e = formatterY.format(date);
         //整合获取地址
         String url="http://quotes.money.163.com/service/chddata.html?code="+area+code+"&start="+date_s+"&end="+date_e+
                 "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
@@ -25,7 +39,7 @@ public class Main {
         FileSystemView fsv = FileSystemView.getFileSystemView();
         File com=fsv.getHomeDirectory();
         //桌面真实路径
-        downLoad(url,code,com.getPath());
+        downLoad(url,code+"_"+formatterY.format(date),com.getPath());
         System.out.println("Done!");
 
     }
