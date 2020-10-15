@@ -35,13 +35,21 @@ public class Main {
         //整合获取地址
         String url="http://quotes.money.163.com/service/chddata.html?code="+area+code+"&start="+date_s+"&end="+date_e+
                 "&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
-        System.out.println("默认输出到桌面");
-        FileSystemView fsv = FileSystemView.getFileSystemView();
-        File com=fsv.getHomeDirectory();
-        //桌面真实路径
-        downLoad(url,code+"_"+formatterY.format(date),com.getPath());
+        System.out.println("默认输出到nginx的一个我设置的文件夹");
+        downLoad(url,
+                code+"_"+formatterY.format(date),
+                "/usr/local/nginx/html/stockshares",
+                date_e);
         System.out.println("Done!");
-
+        //生成日志文件
+        File logfile = new File("/usr/local/nginx/html/stockshares"+File.separator+date_e+"_log");
+        if(!logfile.exists()){
+            logfile.createNewFile();
+        }
+        FileWriter fileWriter = new FileWriter(logfile.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fileWriter);
+        bw.write(date_e+"-"+url);
+        bw.close();
     }
     //学习一个键盘输入
     public static String input(){
@@ -49,7 +57,7 @@ public class Main {
         return sc.nextLine();
     }
     //解析url姿势水平
-    public static void  downLoad(String urlStr,String fileName,String savePath) throws IOException {
+    public static void  downLoad(String urlStr,String fileName,String savePath,String datenow) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         //USERAGENT
@@ -63,12 +71,8 @@ public class Main {
         File file = new File(saveDir + File.separator + fileName);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
-        if (fos != null) {
             fos.close();
-        }
-        if (inputStream != null) {
             inputStream.close();
-        }
         System.out.println(url);
         }
 
