@@ -50,11 +50,7 @@ public class Main {
         bw.write(date_e+"-"+url);
         bw.close();
     }
-    //学习一个键盘输入
-    public static String input(){
-    Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
-    }
+
     //解析url姿势水平
     public static void  downLoad(String urlStr, String fileName, String savePath) throws IOException {
         URL url = new URL(urlStr);
