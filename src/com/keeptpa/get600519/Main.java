@@ -1,6 +1,5 @@
 package com.keeptpa.get600519;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,8 +37,8 @@ public class Main {
         System.out.println("默认输出到nginx的一个我设置的文件夹");
         downLoad(url,
                 code+"_"+formatterY.format(date),
-                "/usr/local/nginx/html/stockshares",
-                date_e);
+                "/usr/local/nginx/html/stockshares"
+        );
         System.out.println("Done!");
         //生成日志文件
         File logfile = new File("/usr/local/nginx/html/stockshares"+File.separator+date_e+"_log");
@@ -57,7 +56,7 @@ public class Main {
         return sc.nextLine();
     }
     //解析url姿势水平
-    public static void  downLoad(String urlStr,String fileName,String savePath,String datenow) throws IOException {
+    public static void  downLoad(String urlStr, String fileName, String savePath) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         //USERAGENT
